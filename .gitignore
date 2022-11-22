@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+*/__pycache__/
+*/env/
+*/.env
+*/google-services.json
