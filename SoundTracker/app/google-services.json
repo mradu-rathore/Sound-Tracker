@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "280401021316",
+    "project_id": "sound-recorder-bc3d7",
+    "storage_bucket": "sound-recorder-bc3d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280401021316:android:df427021dba93872c575d1",
+        "android_client_info": {
+          "package_name": "com.example.soundtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280401021316-cpogj5vrk8iotv8podq464jli3er61b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5ZQdBeFtpvjvx4avMENScHjOimX4TGkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280401021316-cpogj5vrk8iotv8podq464jli3er61b9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
