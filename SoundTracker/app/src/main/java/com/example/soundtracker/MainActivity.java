@@ -4,19 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
-import android.icu.text.DateFormat;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
-import android.icu.text.DateFormat;
 import android.os.Environment;
 import android.os.Handler;
-//import android.support.annotation.NonNull;
-//import android.support.annotation.RequiresApi;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -55,15 +46,14 @@ public class MainActivity extends AppCompatActivity {
     StorageReference audioStorageRef;
 
     private MediaRecorder mediaRecorder;
-    MediaPlayer mediaPlayer;
     EditText frequency;
     EditText duration;
     Button start;
     Button upload;
     TelephonyManager tm;
     String date;
-    String location;
-    String imei;
+
+
 
 
     //private TextView tvSampleDuration;
@@ -112,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //date = Log.e("date", new SimpleDateFormat("dd/mm/yyyy hh:mm").format(new Date()));
-    //tvSampleDuration = (TextView) findViewById(R.id.editTextDuration);
-
     /* Code to record audio */
     public void btnStartPressed(View v) {
         try {
@@ -125,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             int fr = fre*6000;
 
             Toast.makeText(this, "Recording has started", Toast.LENGTH_LONG).show();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < fre; i++) {
                 System.out.println("Recording - " + i);
                 recordAudio(du);
                 Thread.sleep(fr);
@@ -134,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+/* Code to record audio */
         private void recordAudio(int d) throws IOException {
 
             try{
-            int du = d;
+            int duration = d;
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -157,87 +144,11 @@ public class MainActivity extends AppCompatActivity {
                         mediaRecorder = null;
                     }
                 }
-            }, du);
+            }, duration);
        } catch (Exception e) {
                e.printStackTrace();
            }
     }
-//        private void recordVoice(int d) throws IOException {
-//            int du = d;
-//            mediaRecorder = new MediaRecorder();
-//            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//            File outputFile = getRecordingFile();
-//            outputFiles.add(outputFile);
-//            mediaRecorder.setOutputFile(outputFile.getPath());
-//            mediaRecorder.prepare();
-//            mediaRecorder.start();
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if(mediaRecorder != null) {
-//                        mediaRecorder.stop();
-//                        mediaRecorder.release();
-//                        mediaRecorder = null;
-//                    }
-//                }
-//            }, du);
-//        }
-//        try {
-//            mediaRecorder = new MediaRecorder();
-//            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//            File outputFile = getRecordingFile();
-//            outputFiles.add(outputFile);
-//            mediaRecorder.setOutputFile(outputFile.getPath());
-//            //mediaRecorder.setOutputFile(getRecordingFilePath());
-//            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//            mediaRecorder.prepare();
-//            mediaRecorder.start();
-//
-//            Toast.makeText(this, "Recording Started", Toast.LENGTH_LONG).show();
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        private Date getDateTime(){
-//            long millis = System.currentTimeMillis();
-//            java.sql.Date date = new java.sql.Date(millis);
-//            return date;
-//        }
-
-//    }
-//
-//
-//    /* Code to upload audio recording */
-//    public void u(View v){
-//        mediaRecorder.stop();
-//        mediaRecorder.release();
-//        mediaRecorder = null;
-//
-//        Toast.makeText(this, "Recording Stopped", Toast.LENGTH_LONG).show();
-//
-//
-//
-//
-//    }
-    /* Code to play audio recording(Testing Purpose) */
-//    public void btnPlayPressed(View v){
-//        try {
-//            mediaPlayer = new MediaPlayer();
-//            mediaPlayer.setDataSource(getRecordingFile());
-//            mediaPlayer.prepare();
-//            mediaPlayer.start();
-//            Toast.makeText(this, "Recording Playing", Toast.LENGTH_LONG).show();
-//
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-
-
-   // }
     /* Microphone Check */
     private boolean isMicrophoneWorking(){
         if (this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)){
@@ -248,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    /* Mic Permission */
+    // Mic Permission
     private void getMicrophonePermission(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MICROPHONE_PERMISSION_CODE);
@@ -270,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     private void btnUploadPressed(View view){
         uploadFileToDB(this, outputFiles);
     }
-
+// Code to upload files to Firebase Database
     private void uploadFileToDB(Context cx, ArrayList<File> recordedFiles) {
 
         for (int i = 0; i < recordedFiles.size(); i++) {
@@ -299,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    
+    // Code to get Location Permission
     private void getLocationPermission(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
@@ -308,24 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-    /* Path to record audio */
-//    private String getRecordingFilePath(){
-//
-//        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-//        File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-//        File file = new File(musicDirectory,"testRecordingFile" + ".mp3");
-//        // Create a reference to "mountains.jpg"
-//       // StorageReference mountainsRef = storageRef.child(file);
-//
-//// Create a reference to 'images/mountains.jpg'
-//       // StorageReference mountainImagesRef = storageRef.child(file);
-//
-//// While the file names are the same, the references point to different files
-//      //  mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-       //mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-       //return file.getPath();
    }
 
 
